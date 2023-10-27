@@ -1,0 +1,7 @@
+#zmodload zsh/zprof
+
+DIR="$(dirname "$(readlink -f ~/.zshrc)")"
+
+source "$DIR/config/main.zsh"
+
+#zprof
