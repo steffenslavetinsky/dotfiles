@@ -1,0 +1,21 @@
+Host sanchez
+	HostName 192.168.10.138
+
+Host svcengco
+	HostName svrehdevengco.rehau.org
+	User steffen.slavetinsky@rehau.com
+	ProxyJump sanchez
+
+Host svcengco.ip
+	HostName 172.30.3.85
+	User steffen.slavetinsky@rehau.com
+	ProxyJump sanchez
+
+Host blueberry
+	IdentityFile ~/.ssh/id_rsa
+	HostName 192.168.10.112
+	User pi
+
+Host qnap
+	IdentityFile ~/.ssh/id_rsa
+	HostName 192.168.10.114

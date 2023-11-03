@@ -1,0 +1,16 @@
+# location: $HOME/.ssh/config
+
+Include ~/.orbstack/ssh/config
+
+Include "/Users/steffen/Code/Steffen/dotfiles/ssh/configs/home"
+
+Host netcup.server
+	IdentityFile ~/.ssh/id_rsa
+	Port 30022
+	HostName v2202209183726202121.happysrv.de
+	User root
+
+Host rsync.net
+	IdentityFile ~/.ssh/id_rsa
+	HostName zh3674.rsync.net
+	User zh3674

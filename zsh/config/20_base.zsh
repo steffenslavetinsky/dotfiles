@@ -55,5 +55,3 @@ fi
 zplug load
 
 export GPG_TTY=$(tty)
-
-. /opt/homebrew/opt/asdf/libexec/asdf.sh

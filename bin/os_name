@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+os_name () {
+  UNAME=$(uname | tr "[:upper:]" "[:lower:]")
+  case "$UNAME" in
+    linux*)   echo "linux" ;;
+    darwin*)  echo "mac" ;;
+    *)        echo "unknown" ;;
+  esac
+}
+
+os_name
