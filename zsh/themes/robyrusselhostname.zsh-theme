@@ -1,6 +1,10 @@
-local hostname="%{[38;5;008m%}%m"
 
-PROMPT="$hostname: %{$fg[cyan]%}%c%{$reset_color%}"
+if [[ -n $SSH_CONNECTION ]]; then
+    local hostname="%{[38;5;008m%}%m"
+    PROMPT="$hostname: %{$fg[cyan]%}%c%{$reset_color%}"
+else
+    PROMPT="%{$fg[cyan]%}%c%{$reset_color%}"
+fi
 PROMPT+=' $(git_prompt_info)'
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:(%{$fg[red]%}"
