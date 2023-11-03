@@ -17,9 +17,10 @@ else
   info "asdf installed: $(asdf --version)"
 fi
 
+asdf direnv setup --shell bash --version system
+
 asdf plugin-add python
 asdf plugin-add direnv
-asdf direnv setup --shell bash --version system
 
 
 
