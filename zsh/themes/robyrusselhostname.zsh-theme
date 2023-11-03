@@ -1,6 +1,6 @@
 
 if [[ -n $SSH_CONNECTION ]]; then
-    local host="%{[38;5;008m%}%n@%m"
+    local host="%{[38;5;016m%}%n@%m"
     PROMPT="$host: %{$fg[cyan]%}%c%{$reset_color%}"
 else
     PROMPT="%{$fg[cyan]%}%c%{$reset_color%}"
