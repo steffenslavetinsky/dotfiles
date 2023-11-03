@@ -1,5 +1,4 @@
-fpath=(~/.zsh_completions $fpath)
-fpath=($fpath "/Users/steffen/.zfunctions")
+fpath=(~/.zsh_completions "${fpath[@]}")
 
 # ZPlug stuff
 
@@ -8,7 +7,7 @@ if [[ ! -d ~/.zplug ]];then
 fi
 source ~/.zplug/init.zsh
 
-zplug "themes/robbyrussell", from:oh-my-zsh, as:theme
+zplug "$DOTFILES_ROOT/zsh/themes", from:local, as:theme
 
 zplug "plugins/git", from:oh-my-zsh
 
