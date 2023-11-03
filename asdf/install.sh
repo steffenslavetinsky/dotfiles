@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 . scripts/printutils.sh
 
 asdf --version
@@ -18,5 +16,10 @@ else
 
   info "asdf installed: $(asdf --version)"
 fi
+
+asdf plugin-add python
+asdf plugin-add direnv
+asdf direnv setup --shell bash --version system
+
 
 
