@@ -19,8 +19,8 @@ fi
 
 asdf direnv setup --shell bash --version system
 
-asdf plugin-add python
-asdf plugin-add direnv
+asdf plugin-add python || true
+asdf plugin-add direnv || true
 
 
 
