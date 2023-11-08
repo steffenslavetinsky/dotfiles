@@ -10,7 +10,15 @@ export PATH="$PATH:$(pwd)/bin"
 
 export UNAME="$(os_name)"
 
-for file in $(find . -type f -not -path "./scripts/*" -name 'install.sh'); do
+# if not on macos exclude macos install scripts
+find_install_scripts="find . -type f -not -path \"./scripts/*\""
+if [[ $UNAME != "mac" ]]; then
+    find_install_scripts+=" -not -path \"./macos/*\""
+fi
+find_install_scripts+=" -name 'install.sh'"
+
+
+for file in $( eval "$find_install_scripts" ); do
     info "Installing $file"
     bash "$file" -H || fail "Error installing $file"
 done
