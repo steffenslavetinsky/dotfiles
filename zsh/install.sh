@@ -28,4 +28,7 @@ else
   info "zsh installed: $(zsh --version)"
 fi
 
-
+if ! [[ "$SHELL" == *zsh* ]]; then
+    echo "Setting zsh as login shell."
+    chsh -s $(which zsh)
+fi
