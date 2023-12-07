@@ -111,13 +111,13 @@ install_dotfiles() {
 
 	# find all files in dotfiles that should be symlinked in directory
 	# shellcheck disable=SC2044
-	for file in $(find "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink'); do
+	for file in $(find "$DOTFILES_ROOT" -maxdepth 3 -name '*.symlink'); do
 
     dst="$HOME/.$(basename "${file%.*}")"
 
 	  # check if there is another location specified for the symlink
 	  # this is done by setting location: ... in the first line
-	  matching_line=$(sed -n '1s/# location: \(.*\)/\1/p' "$file")
+	  matching_line=$(sed -n '1s/[#"] location: \(.*\)/\1/p' "$file")
 	  if [ -n "$matching_line" ]; then
 	    info "found location: $matching_line for $file"
       dst="$matching_line"
