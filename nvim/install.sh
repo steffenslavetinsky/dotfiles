@@ -2,8 +2,12 @@
 
 . scripts/printutils.sh
 
-nvim --version
-if [ $? -eq 0 ]; then
+mkdir -p ~/.config/nvim
+
+EXIT_CODE=0
+nvim --version || EXIT_CODE=$?
+
+if [ $EXIT_CODE -eq 0 ]; then
     echo "nvim already installed"
 else
   if [[ $UNAME == "linux" ]]; then
@@ -16,5 +20,3 @@ else
 
   info "nvim installed: $(nvim --version)"
 fi
-
-mkdir -p ~/.config/nvim
