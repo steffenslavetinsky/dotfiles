@@ -11,7 +11,7 @@ export PATH="$PATH:$(pwd)/bin"
 export UNAME="$(os_name)"
 
 # if not on macos exclude macos install scripts
-find_install_scripts="find . -type f -not -path \"./scripts/*\""
+find_install_scripts="find . -type f -not -path \"./scripts/*\" -not -path \"./repos/*\""
 if [[ $UNAME != "mac" ]]; then
     find_install_scripts+=" -not -path \"./macos/*\""
 fi

@@ -21,6 +21,14 @@ asdf direnv setup --shell bash --version system
 
 asdf plugin-add python || true
 asdf plugin-add direnv || true
+asdf plugin add ruby || true
 
+
+asdf plugin-update python
+asdf plugin-update direnv
+asdf plugin-update ruby
+
+asdf install ruby 3.3.0
+asdf global ruby 3.3.0
 
 

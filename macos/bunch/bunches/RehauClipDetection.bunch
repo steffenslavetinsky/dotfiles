@@ -1,0 +1,20 @@
+---
+title: 📱iOS
+sequence: parallel
+---
+
+/* Applications */
+Xcode
+Simulator
+%FirefoxFun
+
+/* Open Project */
+
+Xcode
+- ~/Code/Steffen/Photorganizer/Photorganizer.xcodeproj
+@Xcode
+
+$ shortcuts run start_timer <<< '{"Project": "Photorganizer", "Description": "", "Tags": ["dev"]}'
+!$ shortcuts run stop_current_timer_if_project_matches <<< '{"Project": "Photorganizer", "Description": "", "Tags": ["dev"]}'
+
+Xcode

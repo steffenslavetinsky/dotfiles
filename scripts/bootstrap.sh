@@ -6,27 +6,11 @@ cd "$(dirname "$0")/.."
 DOTFILES_ROOT=$(pwd)
 
 set -e
-set -x
+#set -x
 
 echo ''
 
-info() {
-	printf "  [ \033[00;34m..\033[0m ] $1"
-}
-
-user() {
-	printf "  [ \033[0;33m?\033[0m ] $1\n"
-}
-
-success() {
-	printf "\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
-}
-
-fail() {
-	printf "\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
-	echo ''
-	exit
-}
+. scripts/printutils.sh
 
 link_file() {
 	local src=$1 dst=$2
@@ -46,6 +30,8 @@ link_file() {
         then
 
           skip=true;
+
+          info "$src file is already linked"
 
         else
 
@@ -110,14 +96,25 @@ install_dotfiles() {
 	local overwrite_all=false backup_all=false skip_all=false
 
 	# find all files in dotfiles that should be symlinked in directory
+	# exclude macos directory when not on mac
+
+	export UNAME="$(os_name)"
+
+  # if not on macos exclude macos install scripts
+  find_dotfiles_command="find \"$DOTFILES_ROOT\" -type f -maxdepth 4 -not -path \"./scripts/*\""
+  if [[ $UNAME != "mac" ]]; then
+      find_dotfiles_command+=" -not -path \"./macos/*\""
+  fi
+  find_dotfiles_command+=" -name '*.symlink'"
+
 	# shellcheck disable=SC2044
-	for file in $(find "$DOTFILES_ROOT" -maxdepth 3 -name '*.symlink'); do
+	for file in $( eval "$find_dotfiles_command" ); do
 
     dst="$HOME/.$(basename "${file%.*}")"
 
 	  # check if there is another location specified for the symlink
 	  # this is done by setting location: ... in the first line
-	  matching_line=$(sed -n '1s/[#"] location: \(.*\)/\1/p' "$file")
+	  matching_line=$(sed -n '1s/[#"-]* location: \(.*\)/\1/p' "$file")
 	  if [ -n "$matching_line" ]; then
 	    info "found location: $matching_line for $file"
       dst="$matching_line"
