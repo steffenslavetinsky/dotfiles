@@ -13,7 +13,7 @@ if [[ $UNAME == "mac" ]]; then
   fi
 
   # Install homebrew packages
-  brew install grc coreutils spark asdf direnv fzf
+  brew install grc coreutils spark asdf direnv fzf ripgrep
 else
   info "  Skipping Homebrew install"
 fi
