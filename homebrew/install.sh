@@ -14,6 +14,7 @@ if [[ $UNAME == "mac" ]]; then
 
   # Install homebrew packages
   brew install grc coreutils spark asdf direnv fzf ripgrep
+  brew install --cask karabiner-elements
 else
   info "  Skipping Homebrew install"
 fi
