@@ -1,9 +1,9 @@
 
 if [[ -n $SSH_CONNECTION ]]; then
     local host="%{[38;5;016m%}%n@%m"
-    PROMPT="$host: %{$fg[cyan]%}%c%{$reset_color%}"
+    PROMPT="$host: %(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%}"
 else
-    PROMPT="%{$fg[cyan]%}%c%{$reset_color%}"
+    PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%}"
 fi
 PROMPT+=' $(git_prompt_info)'
 
