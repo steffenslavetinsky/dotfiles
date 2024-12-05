@@ -7,6 +7,8 @@ if [[ ! -d ~/.zplug ]];then
 fi
 source ~/.zplug/init.zsh
 
+zplug "ohmyzsh/ohmyzsh", use:"lib/async_prompt.zsh"
+
 zplug "$DOTFILES_ROOT/zsh/themes", from:local, as:theme
 
 zplug "plugins/git", from:oh-my-zsh
