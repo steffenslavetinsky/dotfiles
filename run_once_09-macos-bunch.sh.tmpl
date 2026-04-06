@@ -1,0 +1,12 @@
+{{ if and (eq .chezmoi.os "darwin") (.automations_repo_path) -}}
+#!/usr/bin/env bash
+set -e
+
+if ! command -v bunch &>/dev/null; then
+  echo "Installing BunchCLI..."
+  gem install bunchcli
+fi
+
+defaults write com.brettterpstra.Bunch NSNavLastRootDirectory "{{ .automations_repo_path }}/bunch/bunches"
+defaults write com.brettterpstra.Bunch configDir "{{ .automations_repo_path }}/bunch/bunches"
+{{ end -}}

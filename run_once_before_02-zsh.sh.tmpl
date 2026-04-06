@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e
+
+if ! command -v zsh &>/dev/null; then
+{{ if eq .chezmoi.os "linux" -}}
+  echo "Installing zsh..."
+  sudo apt-get install -y zsh
+{{ else if eq .chezmoi.os "darwin" -}}
+  echo "Installing zsh..."
+  brew install zsh
+{{ end -}}
+fi
+
+# Set zsh as login shell if not already
+if ! [[ "$SHELL" == *zsh* ]]; then
+  echo "Setting zsh as login shell..."
+  chsh -s "$(which zsh)"
+fi

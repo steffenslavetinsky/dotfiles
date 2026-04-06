@@ -1,15 +1,22 @@
 # Steffen's .dotfiles
 
-## Installation
+Managed with [chezmoi](https://www.chezmoi.io/).
 
-At the moment there are two main scripts:
+## Setup on a new machine
+
 ```bash
-./scripts/install.sh
+brew install chezmoi age
+chezmoi init --apply https://github.com/steffenslavetinsky/dotfiles.git
 ```
 
-and
-```bash
-./scripts/bootstrap.sh
-```
+You'll need to place your age decryption key at `~/.config/chezmoi/key.txt` before applying (for encrypted SSH configs).
 
-where `install.sh` installs necessary software and `bootstrap.sh` setsup symlinks etx. to the dotfiles.
+## Day-to-day usage
+
+```bash
+chezmoi apply          # apply changes from source to home
+chezmoi diff           # preview what would change
+chezmoi edit ~/.zshrc  # edit a managed file
+chezmoi add <file>     # start managing a new file
+chezmoi cd             # cd into the source directory
+```

@@ -1,0 +1,8 @@
+encryption = "age"
+
+[age]
+    identity = "~/.config/chezmoi/key.txt"
+    recipient = "age1ymtlna5xtw76fafan0r64uz89lwyslgtwx5czgc7r3j2498amuwqn4hw8g"
+
+[data]
+    automations_repo_path = {{ promptStringOnce . "automations_repo_path" "Path to automations repo (leave empty if none)" | quote }}

@@ -26,5 +26,3 @@ function spectrum_ls() {
     print -P -- "$code: ${FG[$code]}${ZSH_SPECTRUM_TEXT}%{$reset_color%}"
   done
 }
-
-spectrum_ls

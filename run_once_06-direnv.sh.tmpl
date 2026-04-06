@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+if ! command -v direnv &>/dev/null; then
+{{ if eq .chezmoi.os "linux" -}}
+  echo "Installing direnv..."
+  curl -sfL https://direnv.net/install.sh | bash
+{{ else if eq .chezmoi.os "darwin" -}}
+  echo "direnv should be installed via homebrew"
+{{ end -}}
+fi

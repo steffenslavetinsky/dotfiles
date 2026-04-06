@@ -1,6 +1,0 @@
-# location: $HOME/.ssh/config
-
-Include ~/.orbstack/ssh/config
-
-Include "~/.ssh/configs/home"
-Include "~/.ssh/configs/server"

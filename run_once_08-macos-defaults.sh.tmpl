@@ -1,0 +1,14 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+set -x
+
+# Dock
+defaults write com.apple.dock "static-only" -bool "true"
+
+# Finder
+defaults write com.apple.finder "FXPreferredViewStyle" -string "Nlsv"
+defaults write com.apple.finder "_FXSortFoldersFirst" -bool "true"
+
+# MenuBar
+defaults write com.apple.menuextra.clock "FlashDateSeparators" -bool "false"
+{{ end -}}

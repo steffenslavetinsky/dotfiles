@@ -1,0 +1,15 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+set -e
+
+# Install Homebrew if not present
+if ! command -v brew &>/dev/null; then
+  echo "Installing Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Install packages
+brew install grc coreutils spark asdf direnv fzf ripgrep
+brew install --cask karabiner-elements || true
+brew install --cask font-meslo-lg-nerd-font || true
+{{ end -}}

@@ -1,0 +1,9 @@
+# These files live in the source dir and are consumed directly by zsh via $DOTFILES_ROOT
+# They should NOT be deployed to $HOME
+bin/
+git/
+macos/
+nvim/
+zsh/
+CLAUDE.md
+README.md

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -e
+
+mkdir -p ~/.config/nvim
+
+if ! command -v nvim &>/dev/null; then
+{{ if eq .chezmoi.os "linux" -}}
+  echo "Installing neovim..."
+  sudo apt-get install -y neovim
+{{ else if eq .chezmoi.os "darwin" -}}
+  echo "Installing neovim..."
+  brew install nvim
+{{ end -}}
+fi

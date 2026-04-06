@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+
+if ! command -v asdf &>/dev/null; then
+{{ if eq .chezmoi.os "linux" -}}
+  echo "Installing asdf..."
+  latest="$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' https://github.com/asdf-vm/asdf.git "v*.*.*" | tail --lines=1 | awk -F'/' '{print $NF}')"
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "$latest"
+{{ else if eq .chezmoi.os "darwin" -}}
+  echo "asdf should be installed via homebrew"
+{{ end -}}
+fi
+
+if command -v asdf &>/dev/null; then
+  asdf plugin add python || true
+  asdf plugin add direnv || true
+fi
