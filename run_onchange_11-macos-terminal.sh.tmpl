@@ -1,0 +1,18 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+# hash: {{ include "macos/Dotfiles.terminal" | sha256sum }}
+set -e
+
+PROFILE_PATH="{{ .chezmoi.sourceDir }}/macos/Dotfiles.terminal"
+PROFILE_NAME="Dotfiles"
+
+# Import the profile
+open "$PROFILE_PATH"
+sleep 1
+
+# Set as default and startup profile
+defaults write com.apple.Terminal "Default Window Settings" -string "$PROFILE_NAME"
+defaults write com.apple.Terminal "Startup Window Settings" -string "$PROFILE_NAME"
+
+echo "Terminal profile '$PROFILE_NAME' imported and set as default."
+{{ end -}}

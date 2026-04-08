@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Font</key>
+	<data>
+	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
+	AAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGkCwwVFlUkbnVsbNQNDg8QERIT
+	FFZOU1NpemVYTlNmRmxhZ3NWTlNOYW1lViRjbGFzcyNAJgAAAAAAABAQgAKAA18QFFNv
+	dXJjZUNvZGVQcm8tTWVkaXVt0hcYGRpaJGNsYXNzbmFtZVgkY2xhc3Nlc1ZOU0ZvbnSi
+	GRtYTlNPYmplY3QIERokKTI3SUxRU1heZ253foWOkJKUq7C7xMvOAAAAAAAAAQEAAAAA
+	AAAAHAAAAAAAAAAAAAAAAAAAANc=
+	</data>
+	<key>FontAntialias</key>
+	<true/>
+	<key>FontHeightSpacing</key>
+	<real>1.1000000000000001</real>
+	<key>FontWidthSpacing</key>
+	<real>1.1000000000000001</real>
+	<key>ProfileCurrentVersion</key>
+	<real>2.0899999999999999</real>
+	<key>name</key>
+	<string>Basic</string>
+	<key>type</key>
+	<string>Window Settings</string>
+</dict>
+</plist>
