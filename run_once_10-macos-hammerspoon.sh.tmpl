@@ -1,8 +1,6 @@
-{{ if and (eq .chezmoi.os "darwin") (.automations_repo_path) -}}
+{{ if eq .chezmoi.os "darwin" -}}
 #!/usr/bin/env bash
 set -e
 
-brew install hammerspoon --cask
-
-defaults write org.hammerspoon.Hammerspoon MJConfigFile "{{ .automations_repo_path }}/hammerspoon/init.lua"
+brew install hammerspoon --cask || true
 {{ end -}}
