@@ -1,0 +1,21 @@
+# Font
+font-family = MesloLGS NF
+font-size = 14
+
+# Window
+macos-titlebar-style = tabs
+window-theme = auto
+
+# Default colors (warm white)
+background = #f5f5f0
+foreground = #2e3440
+
+# Cursor
+cursor-style = bar
+cursor-style-blink = true
+
+# New windows/tabs inherit working directory
+window-inherit-working-directory = true
+
+# Keybindings
+keybind = cmd+shift+t=new_window
