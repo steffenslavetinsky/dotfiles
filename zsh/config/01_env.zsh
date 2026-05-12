@@ -12,3 +12,7 @@ path=($DOTFILES_ROOT/bin /usr/local/go/bin $GOPATH/bin $path)
 
 fpath=($DOTFILES_ROOT/zsh/functions ~/.zsh_completions $fpath)
 autoload -Uz spectrum_ls
+# Terminal themes
+source "$DOTFILES_ROOT/zsh/terminal-themes.zsh"
+source "$DOTFILES_ROOT/zsh/functions/terminal_theme"
+source "$DOTFILES_ROOT/zsh/functions/terminal_theme_init"

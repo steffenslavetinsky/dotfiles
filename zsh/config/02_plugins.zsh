@@ -18,6 +18,18 @@ export ZSH_FZF_HISTORY_SEARCH_FZF_ARGS='+m -x --preview-window=hidden'
 # direnv
 eval "$(direnv hook zsh)"
 
+# Apply terminal theme when TERMINAL_THEME changes (via direnv)
+_TERMINAL_THEME_CURRENT=""
+_terminal_theme_precmd() {
+  local target="${TERMINAL_THEME:-default}"
+  if [[ "$target" != "$_TERMINAL_THEME_CURRENT" ]]; then
+    terminal_theme "$target"
+    _TERMINAL_THEME_CURRENT="$target"
+  fi
+}
+autoload -U add-zsh-hook
+add-zsh-hook precmd _terminal_theme_precmd
+
 # History
 export HISTFILE=~/.zsh_history
 export SAVEHIST=1000000

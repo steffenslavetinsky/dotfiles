@@ -1,0 +1,21 @@
+# Switch terminal colors via OSC escape sequences
+# Usage: terminal_theme <theme-name>
+#        terminal_theme reset
+function terminal_theme() {
+  local theme="${1:-default}"
+  [[ "$theme" == "reset" ]] && theme="default"
+
+  local colors="${TERMINAL_THEMES[$theme]}"
+  if [[ -z "$colors" ]]; then
+    echo "Unknown terminal theme: $theme" >&2
+    return 1
+  fi
+
+  local bg="${colors%% *}"
+  local fg="${colors##* }"
+
+  # OSC 11: set background color
+  printf '\e]11;%s\a' "$bg"
+  # OSC 10: set foreground color
+  printf '\e]10;%s\a' "$fg"
+}
