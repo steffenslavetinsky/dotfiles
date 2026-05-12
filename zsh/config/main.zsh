@@ -6,3 +6,6 @@ for file in "$ZSH_CONFIG_ROOT"/*.zsh; do
         source "$file"
     fi
 done
+
+# Machine-specific overrides (not tracked by chezmoi)
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
