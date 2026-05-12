@@ -1,0 +1,94 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(**/.claude/reviews/**)",
+      "Write(**/.claude/reviews/**)",
+      "Glob(**/.claude/reviews/**)",
+      "Bash(mkdir -p:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Edit(~/.ssh/**)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Read(**/*.pem)",
+      "Edit(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(**/*.key)",
+      "Read(**/*.p12)",
+      "Edit(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Edit(**/*.pfx)",
+      "Read(**/*.ppk)",
+      "Edit(**/*.ppk)",
+      "Read(**/credentials)",
+      "Edit(**/credentials)",
+      "Read(**/credentials.*)",
+      "Edit(**/credentials.*)",
+      "Read(**/*.credentials)",
+      "Edit(**/*.credentials)",
+      "Read(**/*secret*)",
+      "Edit(**/*secret*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|mcp__gitkraken__git_add_or_commit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/steffen.slavetinsky/.claude/hooks/gitui-before-commit.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/steffen.slavetinsky/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "interface-design@interface-design": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "agent-pm@agent-marketplace": true,
+    "code-simplifier@claude-plugins-official": true,
+    "code-review@ai-skills": true,
+    "expert-consultants@ai-skills": true,
+    "expert-code-review@ai-skills": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "agent-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "trustyou/agent-marketplace"
+      }
+    },
+    "ai-skills": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/steffen.slavetinsky/code/ai-skills"
+      },
+      "autoUpdate": true
+    }
+  },
+  "plansDirectory": "./.claude/plans",
+  "skipAutoPermissionPrompt": true
+}
