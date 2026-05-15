@@ -2,6 +2,24 @@
 
 Personal preferences and conventions that apply across all projects.
 
+## Chezmoi-managed files
+
+My `~/.claude/` directory is partially managed by [chezmoi](https://www.chezmoi.io/), which is the source of truth for these files:
+
+- `~/.claude/settings.json`
+- `~/.claude/CLAUDE.md` (this file)
+- `~/.claude/RTK.md`
+
+After editing any of these in place (which is what Claude Code does), I need to run `chezmoi re-add <path>` so the change flows back into the chezmoi source. **If you edit one of these files, remind me to run `chezmoi re-add` afterwards.** Otherwise the next `chezmoi apply` will overwrite my changes.
+
+The following entries under `~/.claude/` are symlinks to my `ai-skills` repo (managed by chezmoi as symlinks, so edits land in the repo directly and need no `re-add`):
+
+- `~/.claude/agents/` → `ai-skills/agents/`
+- `~/.claude/skills/` → `ai-skills/skills/`
+- `~/.claude/expert-resources/` → `ai-skills/expert-resources/`
+
+Other paths in `~/.claude/` (`projects/`, `memory/`, sessions, etc.) are not chezmoi-managed — they're Claude Code's own state.
+
 ## DevPod / DevContainer Strategy
 
 I use [DevPod](https://devpod.sh/) for all development containers. When a project contains a `.devcontainer/` directory:
@@ -57,6 +75,15 @@ Prefer `make <target>` over raw tool commands when a Makefile target exists.
 Follow Conventional Commits: `<type>(<scope>): <description>` where type is `feat`, `fix`, `chore`, `docs`, `test`, etc. Append `!` before the colon for breaking changes. Optional body/footer separated by blank lines.
 - Use broad scopes: `backend`, `ci`, `admin-ui`, etc. — not overly fine-grained
 - Examples: `feat(backend): add webhook retry logic`, `fix(admin-ui): date picker timezone issue`
+
+### Rebase
+
+When I say "rebase onto main" (or any branch), I mean `origin/main` — the remote version, not the local tracking branch. Before rebasing:
+
+1. **Always fetch first**: Run `git fetch origin` to ensure the local remote-tracking ref is up to date.
+2. **Compare local vs remote**: Check if the local branch (e.g., `main`) and its remote counterpart (`origin/main`) point to different commits.
+3. **If they differ**: Ask me whether I want to rebase onto the remote version (`origin/main`) or the local version (`main`). Default assumption is remote.
+4. **Rebase onto the remote ref**: Use `git rebase origin/<branch>` (not `git rebase <branch>`) unless I explicitly say otherwise.
 
 ### Branch Naming
 
