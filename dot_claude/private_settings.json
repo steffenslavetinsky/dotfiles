@@ -5,7 +5,72 @@
       "Write(**/.claude/reviews/**)",
       "Glob(**/.claude/reviews/**)",
       "Bash(mkdir -p:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git show *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(git tag *)",
+      "Bash(git blame *)",
+      "Bash(git shortlog *)",
+      "Bash(git stash list *)",
+      "Bash(git add *)",
+      "Bash(git add)",
+      "Bash(git commit *)",
+      "Bash(git commit)",
+      "Bash(git fetch *)",
+      "Bash(git fetch)",
+      "Bash(git pull *)",
+      "Bash(git merge *)",
+      "Bash(git stash *)",
+      "Bash(git mv *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh pr status *)",
+      "Bash(gh issue list *)",
+      "Bash(gh issue view *)",
+      "Bash(gh issue status *)",
+      "Bash(gh repo view *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(gh api repos/*/pulls/*)",
+      "Bash(gh api repos/*/pulls/*/comments*)",
+      "Bash(gh api repos/*/pulls/*/reviews*)",
+      "Bash(gh api repos/*/actions/runs*)",
+      "mcp__gitkraken__git_status",
+      "mcp__gitkraken__git_fetch",
+      "Bash(rtk grep *)",
+      "Bash(rtk find *)",
+      "Bash(rtk tree *)",
+      "Bash(rtk ls *)",
+      "Bash(rtk read *)",
+      "Bash(rtk deps *)",
+      "Bash(rtk wc *)",
+      "Bash(rtk json *)",
+      "Bash(rtk env *)",
+      "Bash(rtk curl *)",
+      "Bash(git describe *)",
+      "Bash(git rev-parse *)",
+      "Bash(git ls-files *)",
+      "Bash(git cat-file *)",
+      "Bash(git for-each-ref *)",
+      "Bash(git cherry *)",
+      "Bash(git reflog *)",
+      "mcp__gitkraken__git_log_or_diff",
+      "mcp__gitkraken__git_blame",
+      "mcp__gitkraken__git_branch",
+      "mcp__gitkraken__issues_get_detail",
+      "mcp__gitkraken__issues_assigned_to_me",
+      "mcp__gitkraken__pull_request_get_detail",
+      "mcp__gitkraken__pull_request_assigned_to_me",
+      "mcp__gitkraken__pull_request_get_comments",
+      "mcp__gitkraken__repository_get_file_content",
+      "mcp__gitkraken__gitlens_launchpad",
+      "mcp__gitkraken__gitkraken_workspace_list"
     ],
     "deny": [
       "Read(~/.ssh/**)",
@@ -37,11 +102,11 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash|mcp__gitkraken__git_add_or_commit",
+        "matcher": "Bash|mcp__gitkraken__git_push",
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/steffen.slavetinsky/.claude/hooks/gitui-before-commit.sh"
+            "command": "/Users/steffen.slavetinsky/.claude/hooks/gitui-before-push.sh"
           }
         ]
       },
@@ -90,5 +155,7 @@
     }
   },
   "plansDirectory": "./.claude/plans",
-  "skipAutoPermissionPrompt": true
+  "theme": "light",
+  "remoteControlAtStartup": false,
+  "agentPushNotifEnabled": true
 }
