@@ -1,0 +1,173 @@
+{{ if lookPath "jq" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+SETTINGS="$HOME/.claude/settings.json"
+mkdir -p "$HOME/.claude"
+
+{{ if lookPath "rtk" -}}
+RTK_HOOK_CMD='rtk hook claude'
+{{ else -}}
+RTK_HOOK_CMD='command -v rtk >/dev/null 2>&1 && rtk hook claude || true'
+{{ end -}}
+
+# DEFAULTS: seed values for a fresh machine. On an existing machine the live
+# settings.json wins for every key here (permissions you accumulate at runtime
+# and plugins you toggle via /plugin survive `chezmoi apply`).
+DEFAULTS='{
+  "permissions": {
+    "allow": [
+      "Read(**/.claude/reviews/**)",
+      "Write(**/.claude/reviews/**)",
+      "Glob(**/.claude/reviews/**)",
+      "Bash(mkdir -p:*)",
+      "Bash(ls:*)",
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git show *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(git tag *)",
+      "Bash(git blame *)",
+      "Bash(git shortlog *)",
+      "Bash(git stash list *)",
+      "Bash(git add *)",
+      "Bash(git add)",
+      "Bash(git commit *)",
+      "Bash(git commit)",
+      "Bash(git fetch *)",
+      "Bash(git fetch)",
+      "Bash(git pull *)",
+      "Bash(git merge *)",
+      "Bash(git stash *)",
+      "Bash(git mv *)",
+      "Bash(git describe *)",
+      "Bash(git rev-parse *)",
+      "Bash(git ls-files *)",
+      "Bash(git cat-file *)",
+      "Bash(git for-each-ref *)",
+      "Bash(git cherry *)",
+      "Bash(git reflog *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh pr status *)",
+      "Bash(gh issue list *)",
+      "Bash(gh issue view *)",
+      "Bash(gh issue status *)",
+      "Bash(gh repo view *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(gh api repos/*/pulls/*)",
+      "Bash(gh api repos/*/pulls/*/comments*)",
+      "Bash(gh api repos/*/pulls/*/reviews*)",
+      "Bash(gh api repos/*/actions/runs*)",
+      "Bash(rtk grep *)",
+      "Bash(rtk find *)",
+      "Bash(rtk tree *)",
+      "Bash(rtk ls *)",
+      "Bash(rtk read *)",
+      "Bash(rtk deps *)",
+      "Bash(rtk wc *)",
+      "Bash(rtk json *)",
+      "Bash(rtk env *)",
+      "Bash(rtk curl *)"
+    ],
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Edit(~/.ssh/**)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Read(**/*.pem)",
+      "Edit(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(**/*.key)",
+      "Read(**/*.p12)",
+      "Edit(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Edit(**/*.pfx)",
+      "Read(**/*.ppk)",
+      "Edit(**/*.ppk)",
+      "Read(**/credentials)",
+      "Edit(**/credentials)",
+      "Read(**/credentials.*)",
+      "Edit(**/credentials.*)",
+      "Read(**/*.credentials)",
+      "Edit(**/*.credentials)",
+      "Read(**/*secret*)",
+      "Edit(**/*secret*)"
+    ]
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "interface-design@interface-design": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "agent-pm@agent-marketplace": true,
+    "code-simplifier@claude-plugins-official": true,
+    "code-review@ai-skills": true,
+    "expert-consultants@ai-skills": true,
+    "expert-code-review@ai-skills": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "agent-marketplace": {
+      "source": { "source": "github", "repo": "trustyou/agent-marketplace" }
+    },
+    "ai-skills": {
+      "source": { "source": "directory", "path": "HOME_PLACEHOLDER/code/ai-skills" },
+      "autoUpdate": true
+    }
+  },
+  "plansDirectory": "./.claude/plans",
+  "theme": "light",
+  "remoteControlAtStartup": false,
+  "agentPushNotifEnabled": true
+}'
+
+# ENFORCED: dotfiles own these keys. Always overwrite so hook/statusline wiring
+# stays correct and portable. To change them, edit THIS script, not settings.json.
+ENFORCED='{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "HOME_PLACEHOLDER/.claude/hooks/gitui-before-push.sh" }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "RTK_HOOK_CMD_PLACEHOLDER" }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash HOME_PLACEHOLDER/.claude/statusline-command.sh"
+  }
+}'
+
+DEFAULTS="${DEFAULTS//HOME_PLACEHOLDER/$HOME}"
+ENFORCED="${ENFORCED//RTK_HOOK_CMD_PLACEHOLDER/$RTK_HOOK_CMD}"
+ENFORCED="${ENFORCED//HOME_PLACEHOLDER/$HOME}"
+
+if [[ -f "$SETTINGS" ]]; then
+  # defaults fill gaps, existing wins for shared keys, enforced always overwrites
+  jq -s '.[0] * .[1] * .[2]' <(echo "$DEFAULTS") "$SETTINGS" <(echo "$ENFORCED") > "${SETTINGS}.tmp"
+  mv "${SETTINGS}.tmp" "$SETTINGS"
+else
+  jq -s '.[0] * .[1]' <(echo "$DEFAULTS") <(echo "$ENFORCED") > "$SETTINGS"
+fi
+
+chmod 600 "$SETTINGS"
+echo "Claude Code settings merged → $SETTINGS"
+{{ end -}}
