@@ -73,8 +73,12 @@ My `~/.claude/` directory is partially managed by [chezmoi](https://www.chezmoi.
 
 **Generated file** — `~/.claude/settings.json` is **not** tracked as a file. It is rebuilt on every `chezmoi apply` by `run_after_claude-settings.sh.tmpl`:
 
-- `permissions` and `enabledPlugins` are seeded from the script, but **live values win** — entries Claude adds at runtime and plugins I toggle via `/plugin` survive apply, with **no `re-add` needed**.
+- `permissions`, `enabledPlugins`, and `sandbox` are seeded from the script, but **live values win** — entries Claude adds at runtime and plugins I toggle via `/plugin` survive apply, with **no `re-add` needed**.
 - `hooks` and `statusLine` are **enforced** — always overwritten from the script. To change them, edit the script's heredoc, **not** `settings.json` (direct edits there are clobbered on the next apply).
+
+### Iterating on the sandbox & permissions
+
+`settings.json` carries an OS-level `sandbox` (reads of sensitive dirs fenced via `denyRead`, writes confined to an `allowWrite` allowlist, network open) plus `permissions` allow/deny lists that gate the Bash and file tools. This is meant to stay tight. When a restriction becomes a **genuine hurdle** — a repeated block or prompt — *and* the security benefit of keeping it looks small, propose loosening or rescoping it: name the specific rule and the tradeoff so we can iterate. Don't raise it for one-off prompts; only when the friction clearly outweighs the protection. Tightening proposals are welcome on the same bar.
 
 The following entries under `~/.claude/` are symlinks to my `ai-skills` repo (managed by chezmoi as symlinks, so edits land in the repo directly and need no `re-add`):
 
