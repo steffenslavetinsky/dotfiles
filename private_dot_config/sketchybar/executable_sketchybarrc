@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# SketchyBar config — deployed by chezmoi to ~/.config/sketchybar/sketchybarrc.
+# Workspace indicators (added below the widgets) are driven by AeroSpace; see
+# aerospace.toml exec-on-workspace-change + after-startup-command.
+#
+# MANUAL STEP: hide the macOS system menu bar via
+# System Settings -> Control Centre -> "Automatically hide and show the menu bar".
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+FONT="MesloLGS NF"   # from the font-meslo-lg-nerd-font cask
+
+##### Bar appearance #####
+sketchybar --bar height=32 \
+                 position=top \
+                 padding_left=8 \
+                 padding_right=8 \
+                 color=0xff1e1e2e
+
+##### Default item styling #####
+sketchybar --default icon.font="$FONT:Bold:14.0" \
+                     icon.color=0xffffffff \
+                     label.font="$FONT:Bold:13.0" \
+                     label.color=0xffffffff \
+                     background.color=0x44ffffff \
+                     background.corner_radius=5 \
+                     background.height=24 \
+                     padding_left=5 \
+                     padding_right=5
+
+##### Left: front app #####
+sketchybar --add item front_app left \
+           --subscribe front_app front_app_switched \
+           --set front_app icon.drawing=off \
+                 script="$PLUGIN_DIR/front_app.sh"
+
+##### Right: clock, battery, volume #####
+sketchybar --add item clock right \
+           --set clock update_freq=10 \
+                 script="$PLUGIN_DIR/clock.sh"
+
+sketchybar --add item battery right \
+           --subscribe battery system_woke power_source_change \
+           --set battery update_freq=120 \
+                 script="$PLUGIN_DIR/battery.sh"
+
+sketchybar --add item volume right \
+           --subscribe volume volume_change \
+           --set volume script="$PLUGIN_DIR/volume.sh"
+
+##### Finalize #####
+sketchybar --update
+
+echo "sketchybar configuration loaded"
