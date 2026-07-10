@@ -17,14 +17,15 @@ start-at-login = true
 # JankyBorders detects an already running instance, so this is restart-safe.
 after-startup-command = [
     'exec-and-forget borders "active_color=glow(0xffff10f0)" inactive_color=0x00000000 width=5.0',
-    # Restart-safe: after-startup-command also runs on reload-config, so only
-    # launch sketchybar if it is not already running.
-    'exec-and-forget sh -c "pgrep -x sketchybar || sketchybar"'
+    # SketchyBar is deactivated for now (config kept under private_dot_config/sketchybar/).
+    # Re-enable the bar by uncommenting the launch line below AND the
+    # exec-on-workspace-change block, then raise gaps.outer.top to ~40:
+    # 'exec-and-forget sh -c "pgrep -x sketchybar || sketchybar"',
 ]
 
-# Notify SketchyBar when the focused workspace changes.
-exec-on-workspace-change = ['/bin/bash', '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE']
+# Notify SketchyBar when the focused workspace changes (deactivated with the bar):
+# exec-on-workspace-change = ['/bin/bash', '-c',
+#     'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE']
 
 # Normalizations keep the window tree tidy (AeroSpace defaults).
 enable-normalization-flatten-containers = true
