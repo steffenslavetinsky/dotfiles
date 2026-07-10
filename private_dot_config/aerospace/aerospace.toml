@@ -1,0 +1,182 @@
+# AeroSpace tiling window manager — https://nikitabobko.github.io/AeroSpace/guide
+# Deployed by chezmoi to ~/.config/aerospace/aerospace.toml
+# Starter config: alt-based i3-style bindings, modest gaps, 1Password floating.
+#
+# DEFERRED — per-worktree workspaces: the plan is a zsh launcher (autoloaded from
+# zsh/functions/) that focuses a workspace named after a git worktree, then opens
+# a ghostty+claude window, a plain ghostty shell, and a Chrome window into it.
+# AeroSpace can't auto-assign these by directory (on-window-detected matches app
+# bundle-id only), so it must be scripted at launch time. Not built yet.
+
+config-version = 2
+
+# Run AeroSpace at login.
+start-at-login = true
+
+# Highlight the focused window with JankyBorders.
+# JankyBorders detects an already running instance, so this is restart-safe.
+after-startup-command = [
+    'exec-and-forget borders "active_color=glow(0xffff10f0)" inactive_color=0x00000000 width=5.0'
+]
+
+# Normalizations keep the window tree tidy (AeroSpace defaults).
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Fresh workspaces start tiled.
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Mouse follows focus when it changes monitor/window.
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Modest gaps between windows and screen edges.
+[gaps]
+    inner.horizontal = 8
+    inner.vertical   = 8
+    outer.left       = 8
+    outer.bottom     = 8
+    outer.top        = 8
+    outer.right      = 8
+
+# Force specific apps to float instead of tile.
+[[on-window-detected]]
+    if.app-id = 'com.1password.1password'
+    run = 'layout floating'
+
+# ---------------------------------------------------------------------------
+# main mode
+# ---------------------------------------------------------------------------
+[mode.main.binding]
+    # Launch a terminal.
+    alt-enter = 'exec-and-forget open -na ghostty'
+
+    # Layout toggles.
+    alt-slash = 'layout tiles horizontal vertical'
+    alt-comma = 'layout accordion horizontal vertical'
+    # Stack the WHOLE workspace: destroys nesting (flatten has no undo).
+    alt-shift-comma = ['flatten-workspace-tree', 'layout accordion']
+
+    # Focus.
+    alt-h = 'focus left'
+    alt-j = 'focus down'
+    alt-k = 'focus up'
+    alt-l = 'focus right'
+
+    # Move window within the tree.
+    alt-shift-h = 'move left'
+    alt-shift-j = 'move down'
+    alt-shift-k = 'move up'
+    alt-shift-l = 'move right'
+
+    # Resize the focused window.
+    alt-minus = 'resize smart -50'
+    alt-equal = 'resize smart +50'
+
+    # Focus workspaces.
+    alt-1 = 'workspace 1'
+    alt-2 = 'workspace 2'
+    alt-3 = 'workspace 3'
+    alt-4 = 'workspace 4'
+    alt-5 = 'workspace 5'
+    alt-6 = 'workspace 6'
+    alt-7 = 'workspace 7'
+    alt-8 = 'workspace 8'
+    alt-9 = 'workspace 9'
+
+    # Letter workspaces (h/j/k/l are reserved for focus).
+    alt-a = 'workspace A'
+    alt-b = 'workspace B'
+    alt-c = 'workspace C'
+    alt-d = 'workspace D'
+    alt-e = 'workspace E'
+    alt-f = 'workspace F'
+    alt-g = 'workspace G'
+    alt-i = 'workspace I'
+    alt-m = 'workspace M'
+    alt-n = 'workspace N'
+    alt-o = 'workspace O'
+    alt-p = 'workspace P'
+    alt-q = 'workspace Q'
+    alt-r = 'workspace R'
+    alt-s = 'workspace S'
+    alt-t = 'workspace T'
+    # alt-u is intentionally unbound — it's the macOS umlaut dead key (ü, ä, ö).
+    alt-v = 'workspace V'
+    alt-w = 'workspace W'
+    alt-x = 'workspace X'
+    alt-y = 'workspace Y'
+    alt-z = 'workspace Z'
+
+    # Move focused window to a workspace.
+    alt-shift-1 = 'move-node-to-workspace 1'
+    alt-shift-2 = 'move-node-to-workspace 2'
+    alt-shift-3 = 'move-node-to-workspace 3'
+    alt-shift-4 = 'move-node-to-workspace 4'
+    alt-shift-5 = 'move-node-to-workspace 5'
+    alt-shift-6 = 'move-node-to-workspace 6'
+    alt-shift-7 = 'move-node-to-workspace 7'
+    alt-shift-8 = 'move-node-to-workspace 8'
+    alt-shift-9 = 'move-node-to-workspace 9'
+
+    alt-shift-a = 'move-node-to-workspace A'
+    alt-shift-b = 'move-node-to-workspace B'
+    alt-shift-c = 'move-node-to-workspace C'
+    alt-shift-d = 'move-node-to-workspace D'
+    alt-shift-e = 'move-node-to-workspace E'
+    alt-shift-f = 'move-node-to-workspace F'
+    alt-shift-g = 'move-node-to-workspace G'
+    alt-shift-i = 'move-node-to-workspace I'
+    alt-shift-m = 'move-node-to-workspace M'
+    alt-shift-n = 'move-node-to-workspace N'
+    alt-shift-o = 'move-node-to-workspace O'
+    alt-shift-p = 'move-node-to-workspace P'
+    alt-shift-q = 'move-node-to-workspace Q'
+    alt-shift-r = 'move-node-to-workspace R'
+    alt-shift-s = 'move-node-to-workspace S'
+    alt-shift-t = 'move-node-to-workspace T'
+    alt-shift-v = 'move-node-to-workspace V'
+    alt-shift-w = 'move-node-to-workspace W'
+    alt-shift-x = 'move-node-to-workspace X'
+    alt-shift-y = 'move-node-to-workspace Y'
+    alt-shift-z = 'move-node-to-workspace Z'
+
+    # Cycle workspaces. Deliberately weird hyper-key combos (ctrl-alt-shift-cmd)
+    # nothing else uses — meant to be emitted by mouse-button remapping software.
+    ctrl-alt-shift-cmd-pageDown = 'workspace next --wrap-around'
+    ctrl-alt-shift-cmd-pageUp   = 'workspace prev --wrap-around'
+
+    # Jump to the previously focused workspace.
+    alt-tab = 'workspace-back-and-forth'
+    # Move the current workspace to the next monitor.
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+    # Enter service mode (resize mode is reached from there via 's').
+    alt-shift-semicolon = 'mode service'
+
+# ---------------------------------------------------------------------------
+# resize mode — alt-shift-; s to enter, esc/enter to leave
+# ---------------------------------------------------------------------------
+[mode.resize.binding]
+    h = 'resize width -50'
+    j = 'resize height +50'
+    k = 'resize height -50'
+    l = 'resize width +50'
+    enter = 'mode main'
+    esc = 'mode main'
+
+# ---------------------------------------------------------------------------
+# service mode — alt-shift-; to enter
+# ---------------------------------------------------------------------------
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']          # reload this file
+    r = ['flatten-workspace-tree', 'mode main']   # reset the layout tree
+    f = ['layout floating tiling', 'mode main']   # toggle float/tile
+    m = ['fullscreen', 'mode main']               # toggle fullscreen (maximize)
+    s = 'mode resize'                             # size: enter resize mode
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
