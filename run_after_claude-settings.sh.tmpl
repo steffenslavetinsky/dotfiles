@@ -337,11 +337,19 @@ ENFORCED="${ENFORCED//HOME_PLACEHOLDER/$HOME}"
 if [[ -f "$SETTINGS" ]]; then
   # defaults fill gaps, existing wins for shared keys, enforced always overwrites
   jq -s '.[0] * .[1] * .[2]' <(echo "$DEFAULTS") "$SETTINGS" <(echo "$ENFORCED") > "${SETTINGS}.tmp"
-  mv "${SETTINGS}.tmp" "$SETTINGS"
 else
-  jq -s '.[0] * .[1]' <(echo "$DEFAULTS") <(echo "$ENFORCED") > "$SETTINGS"
+  jq -s '.[0] * .[1]' <(echo "$DEFAULTS") <(echo "$ENFORCED") > "${SETTINGS}.tmp"
 fi
 
-chmod 600 "$SETTINGS"
-echo "Claude Code settings merged → $SETTINGS"
+# Claude Code snapshots the hooks config when a session starts. Replacing
+# settings.json under a running session invalidates that snapshot and silently
+# disarms every hook until restart — so leave the file untouched on a no-op apply.
+if [[ -f "$SETTINGS" ]] && [[ "$(jq -S . "$SETTINGS")" == "$(jq -S . "${SETTINGS}.tmp")" ]]; then
+  rm -f "${SETTINGS}.tmp"
+  echo "Claude Code settings unchanged → $SETTINGS"
+else
+  mv "${SETTINGS}.tmp" "$SETTINGS"
+  chmod 600 "$SETTINGS"
+  echo "Claude Code settings merged → $SETTINGS (restart running sessions to re-arm hooks)"
+fi
 {{ end -}}

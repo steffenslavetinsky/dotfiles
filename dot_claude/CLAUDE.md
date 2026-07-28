@@ -92,6 +92,7 @@ My `~/.claude/` directory is partially managed by [chezmoi](https://www.chezmoi.
 
 - `permissions`, `enabledPlugins`, and `sandbox` are seeded from the script, but **live values win** — entries Claude adds at runtime and plugins I toggle via `/plugin` survive apply, with **no `re-add` needed**.
 - `hooks` and `statusLine` are **enforced** — always overwritten from the script. To change them, edit the script's heredoc, **not** `settings.json` (direct edits there are clobbered on the next apply).
+- Claude Code snapshots the hooks config at **session start**. When an apply actually rewrites `settings.json`, every running session loses its hooks (silently — the gates stop firing) until it is restarted. The script therefore leaves the file untouched when the merge result is identical; if it prints `settings merged`, restart your sessions.
 
 ### Iterating on the sandbox & permissions
 
