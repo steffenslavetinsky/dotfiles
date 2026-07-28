@@ -24,6 +24,12 @@ For reading, filtering, or transforming structured data, use `jq` for JSON and `
 
 Don't stage intermediate command output in throwaway `/tmp` files when a pipe, command substitution, or process substitution would do — especially in auto mode and for parallel `git add` / `git commit` calls. This is about ephemeral plumbing only; it does **not** restrict writing deliberate, persistent artifacts (e.g. a `/review` skill's review folder, generated reports, scaffolded files).
 
+**Keep commands minimal.** Emit the plainest form that works, so it matches my permission allowlist and runs without a prompt:
+
+- No redundant flags — e.g. `git grep` is already recursive; don't add `-r`.
+- Prefer the bare verb form (`git grep -n "x" -- path/`) over `git -C <abs path> grep …`. Target a repo with `-C <path>` only when the working directory genuinely isn't that repo; never use it as a default "be explicit" habit. The verbose, fully-pathed form misses my allowlist and forces an approval prompt every time.
+- **Always invoke commands by their bare `$PATH` name, never an absolute path** — `git …` not `/usr/bin/git …`, `python …` not `/usr/bin/python …`, and so on for every tool. Absolute paths defeat two things: my permission allowlist (rules match the bare name) and my RTK hook, which auto-rewrites and auto-approves commands starting with the bare name (`git` → `rtk git` — no prompt, plus token savings). The absolute-path form slips past both, so it prompts every time and loses the optimization. Only use an explicit path when the binary genuinely isn't on `$PATH` or you must pin a specific non-default one.
+
 ### Think before coding
 
 - State assumptions explicitly. If uncertain, ask — don't pick silently.
@@ -53,6 +59,15 @@ Don't include: plans or gaps scoped elsewhere; issue/PR references (`#537`, `JIR
 ### Output style
 
 I'm a senior developer/architect. Be explicit on facts. No hedging, no soft framing, no restating the question. State decisions and tradeoffs directly. Match effort to scope — a one-line fix gets a one-line answer, not a plan plus three alternatives.
+
+### Comment & response layout
+
+Reduce AI slop. Lead with a TL;DR, then optional detail.
+
+- **TL;DR first** — open with a bold `TL;DR:` line, 1–2 sentences, minimal phrasing: the answer a human needs at a glance. No preamble, no restating the question. This applies everywhere — chat replies and PR/review/issue comments.
+- **Detail second** — longer context goes after the TL;DR; skip it entirely when the TL;DR says everything. The format depends on where it renders:
+  - **GitHub** (PR/review/issue comments): a collapsed `<details><summary>More context</summary>…</details>` block, so the thread stays scannable.
+  - **Terminal/chat replies**: plain prose (a short paragraph or list). Never emit `<details>` or other HTML here — it doesn't render and shows as literal tags.
 
 ### Bounded execution
 
