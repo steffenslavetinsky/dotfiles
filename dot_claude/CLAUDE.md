@@ -84,6 +84,7 @@ My `~/.claude/` directory is partially managed by [chezmoi](https://www.chezmoi.
 - `~/.claude/CLAUDE.md` (this file)
 - `~/.claude/RTK.md`
 - `~/.claude/hooks/gitui-before-push.sh`
+- `~/.claude/hooks/gitui-before-commit.sh`
 - `~/.claude/statusline-command.sh`
 
 **Generated file** — `~/.claude/settings.json` is **not** tracked as a file. It is rebuilt on every `chezmoi apply` by `run_after_claude-settings.sh.tmpl`:
@@ -92,6 +93,8 @@ My `~/.claude/` directory is partially managed by [chezmoi](https://www.chezmoi.
 - `hooks` and `statusLine` are **enforced** — always overwritten from the script. To change them, edit the script's heredoc, **not** `settings.json` (direct edits there are clobbered on the next apply).
 
 ### Iterating on the sandbox & permissions
+
+`git commit` and `git push` must never be allowlisted, and rtk must not rewrite them (`[hooks] exclude_commands` in `~/Library/Application Support/rtk/config.toml`). Both are grant paths that outrank the `ask` returned by the gitui review gates and silently disarm them.
 
 `settings.json` carries an OS-level `sandbox` (reads of sensitive dirs fenced via `denyRead`, writes confined to an `allowWrite` allowlist, network open) plus `permissions` allow/deny lists that gate the Bash and file tools. This is meant to stay tight. When a restriction becomes a **genuine hurdle** — a repeated block or prompt — *and* the security benefit of keeping it looks small, propose loosening or rescoping it: name the specific rule and the tradeoff so we can iterate. Don't raise it for one-off prompts; only when the friction clearly outweighs the protection. Tightening proposals are welcome on the same bar.
 

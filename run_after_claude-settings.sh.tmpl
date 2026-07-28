@@ -14,6 +14,11 @@ RTK_HOOK_CMD='command -v rtk >/dev/null 2>&1 && rtk hook claude || true'
 # DEFAULTS: seed values for a fresh machine. On an existing machine the live
 # settings.json wins for every key here (permissions you accumulate at runtime
 # and plugins you toggle via /plugin survive `chezmoi apply`).
+#
+# Deliberately NOT allowlisted: git commit and git push. An explicit allow rule
+# outranks the "ask" that gitui-before-{commit,push}.sh returns, which silently
+# defeats the review gate. rtk is kept off those two verbs for the same reason
+# (see [hooks] exclude_commands in the rtk config).
 DEFAULTS='{
   "permissions": {
     "allow": [
@@ -62,8 +67,6 @@ DEFAULTS='{
       "Bash(git cat-file:*)",
       "Bash(git cherry *)",
       "Bash(git cherry:*)",
-      "Bash(git commit *)",
-      "Bash(git commit)",
       "Bash(git describe *)",
       "Bash(git describe:*)",
       "Bash(git diff *)",
@@ -279,6 +282,12 @@ ENFORCED='{
         "matcher": "Bash",
         "hooks": [
           { "type": "command", "command": "HOME_PLACEHOLDER/.claude/hooks/gitui-before-push.sh" }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "HOME_PLACEHOLDER/.claude/hooks/gitui-before-commit.sh" }
         ]
       },
       {
