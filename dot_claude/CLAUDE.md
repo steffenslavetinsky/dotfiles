@@ -85,6 +85,7 @@ My `~/.claude/` directory is partially managed by [chezmoi](https://www.chezmoi.
 - `~/.claude/RTK.md`
 - `~/.claude/hooks/gitui-before-push.sh`
 - `~/.claude/hooks/gitui-before-commit.sh`
+- `~/.claude/hooks/log-tool-outcome.sh`
 - `~/.claude/statusline-command.sh`
 
 **Generated file** — `~/.claude/settings.json` is **not** tracked as a file. It is rebuilt on every `chezmoi apply` by `run_after_claude-settings.sh.tmpl`:

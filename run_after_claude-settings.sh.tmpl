@@ -295,6 +295,32 @@ ENFORCED='{
         "hooks": [
           { "type": "command", "command": "RTK_HOOK_CMD_PLACEHOLDER" }
         ]
+      },
+      {
+        "hooks": [
+          { "type": "command", "command": "HOME_PLACEHOLDER/.claude/hooks/log-tool-outcome.sh PreToolUse" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          { "type": "command", "command": "HOME_PLACEHOLDER/.claude/hooks/log-tool-outcome.sh PostToolUse" }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          { "type": "command", "command": "HOME_PLACEHOLDER/.claude/hooks/log-tool-outcome.sh PostToolUseFailure" }
+        ]
+      }
+    ],
+    "PermissionDenied": [
+      {
+        "hooks": [
+          { "type": "command", "command": "HOME_PLACEHOLDER/.claude/hooks/log-tool-outcome.sh PermissionDenied" }
+        ]
       }
     ]
   },
