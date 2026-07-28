@@ -2,3 +2,4 @@
 .DS_Store
 zsh/config/plugins.zsh
 .claude/
+docs/superpowers/

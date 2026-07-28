@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AeroSpace Cheat Sheet</title>
+<style>
+  :root {
+    --ink: #1a1c23;
+    --muted: #5b6170;
+    --line: #e2e5ec;
+    --accent: #2f6df6;
+    --accent-soft: #eef3fe;
+    --chip-bg: #f4f6fa;
+    --chip-border: #cdd3df;
+    --card: #ffffff;
+  }
+  @page { size: A4; margin: 12mm 12mm 10mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    font-size: 10.2px;
+    line-height: 1.4;
+  }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  header h1 { font-size: 21px; margin: 0; letter-spacing: -0.3px; }
+  header .sub { color: var(--muted); font-size: 10px; }
+  header .mod { font-size: 10px; color: var(--muted); }
+  header .mod b { color: var(--accent); }
+
+  .intro {
+    background: var(--accent-soft);
+    border: 1px solid #d7e2fb;
+    border-radius: 7px;
+    padding: 9px 12px;
+    margin-bottom: 12px;
+    color: #26324a;
+  }
+  .intro b { color: var(--ink); }
+
+  .cols { column-count: 2; column-gap: 14px; }
+
+  section {
+    break-inside: avoid;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 9px 11px 4px;
+    margin-bottom: 12px;
+  }
+  section > h2 {
+    font-size: 12px;
+    margin: 0 0 7px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  section > h2 .tag {
+    font-size: 8.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background: var(--accent);
+    padding: 2px 6px;
+    border-radius: 20px;
+  }
+  section > h2 .enter { color: var(--muted); font-weight: 400; font-size: 9.5px; }
+
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 3.5px 0; vertical-align: top; border-top: 1px solid #f0f2f6; }
+  tr:first-child td { border-top: none; }
+  td.k { white-space: nowrap; width: 1%; padding-right: 8px; }
+  td.d .what { color: var(--muted); font-size: 9.2px; display: block; }
+
+  kbd {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 8.8px;
+    background: var(--chip-bg);
+    border: 1px solid var(--chip-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 5px;
+    color: var(--ink);
+    display: inline-block;
+    line-height: 1.5;
+  }
+  .plus { color: var(--muted); font-size: 8px; padding: 0 1px; }
+
+  .note { color: var(--muted); font-size: 9px; }
+  code {
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 8.8px;
+    background: var(--chip-bg);
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+  footer {
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 8.8px;
+    column-span: all;
+  }
+  footer b { color: var(--ink); }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>AeroSpace Cheat Sheet</h1>
+      <div class="sub">i3-style tiling window manager for macOS</div>
+    </div>
+    <div class="mod">modifier key = <b>Alt (⌥)</b></div>
+  </header>
+
+  <div class="intro">
+    <b>How it works.</b> Every window is a leaf in a tree that AeroSpace tiles to fill the screen — no overlapping, no manual placement.
+    Splitting direction alternates as you nest. You get <b>9 numbered workspaces</b> (virtual desktops that don't animate like macOS Spaces).
+    Two extra <b>modes</b> — <b>resize</b> and <b>service</b> — remap the keyboard temporarily so single keys do the work; press <kbd>esc</kbd> to return to normal.
+  </div>
+
+  <div class="cols">
+
+    <section>
+      <h2><span class="tag">Main</span> Focus &amp; launch</h2>
+      <table>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>H</kbd> <kbd>J</kbd> <kbd>K</kbd> <kbd>L</kbd></td>
+            <td class="d">Move focus left / down / up / right<span class="what">Highlights the neighbouring window in that direction.</span></td></tr>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>⏎</kbd></td>
+            <td class="d">Open a terminal<span class="what">Launches a new ghostty window (<code>open -na ghostty</code>).</span></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2><span class="tag">Main</span> Move &amp; resize windows</h2>
+      <table>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>H</kbd> <kbd>J</kbd> <kbd>K</kbd> <kbd>L</kbd></td>
+            <td class="d">Move window left / down / up / right<span class="what">Swaps the focused window with its neighbour in the tree.</span></td></tr>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>-</kbd></td>
+            <td class="d">Shrink focused window<span class="what">Smart resize by 50px along its split axis.</span></td></tr>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>=</kbd></td>
+            <td class="d">Grow focused window<span class="what">Smart resize by 50px along its split axis.</span></td></tr>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>F</kbd></td>
+            <td class="d">Fullscreen toggle<span class="what">Focused window fills the monitor; press again to restore tiling.</span></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2><span class="tag">Main</span> Layout</h2>
+      <table>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>/</kbd></td>
+            <td class="d">Toggle tiles horizontal / vertical<span class="what">Flips whether the current container splits side-by-side or stacked.</span></td></tr>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>,</kbd></td>
+            <td class="d">Toggle accordion layout<span class="what">Collapses siblings into a stack showing one at a time (like tabs).</span></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2><span class="tag">Main</span> Workspaces</h2>
+      <table>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>1</kbd>…<kbd>9</kbd></td>
+            <td class="d">Switch to workspace 1–9<span class="what">Jumps to that virtual desktop.</span></td></tr>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>1</kbd>…<kbd>9</kbd></td>
+            <td class="d">Send window to workspace 1–9<span class="what">Moves the focused window there; focus stays put.</span></td></tr>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>Tab</kbd></td>
+            <td class="d">Back-and-forth<span class="what">Toggle between current and previously focused workspace.</span></td></tr>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>Tab</kbd></td>
+            <td class="d">Workspace to next monitor<span class="what">Moves the whole workspace to the next display (wraps around).</span></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2><span class="tag">Resize</span> <span class="enter">enter with <kbd>⌥</kbd><span class="plus">+</span><kbd>R</kbd></span></h2>
+      <table>
+        <tr><td class="k"><kbd>H</kbd> / <kbd>L</kbd></td>
+            <td class="d">Narrower / wider<span class="what">Adjusts width by 50px per press.</span></td></tr>
+        <tr><td class="k"><kbd>J</kbd> / <kbd>K</kbd></td>
+            <td class="d">Taller / shorter<span class="what">Adjusts height by 50px per press.</span></td></tr>
+        <tr><td class="k"><kbd>⏎</kbd> / <kbd>esc</kbd></td>
+            <td class="d">Back to main mode<span class="what">Leaves resize mode.</span></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2><span class="tag">Service</span> <span class="enter">enter with <kbd>⌥</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>;</kbd></span></h2>
+      <table>
+        <tr><td class="k"><kbd>esc</kbd></td>
+            <td class="d">Reload config<span class="what">Re-reads aerospace.toml, then returns to main. Use after editing.</span></td></tr>
+        <tr><td class="k"><kbd>R</kbd></td>
+            <td class="d">Reset layout tree<span class="what">Flattens the workspace so windows re-tile evenly.</span></td></tr>
+        <tr><td class="k"><kbd>F</kbd></td>
+            <td class="d">Toggle float / tile<span class="what">Pops the focused window out of tiling (or back in).</span></td></tr>
+        <tr><td class="k"><kbd>⌫</kbd></td>
+            <td class="d">Close all but current<span class="what">Closes every other window in the workspace.</span></td></tr>
+        <tr><td class="k"><kbd>⌥</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>H</kbd> <kbd>J</kbd> <kbd>K</kbd> <kbd>L</kbd></td>
+            <td class="d">Join with neighbour<span class="what">Merges the focused window into the adjacent container in that direction.</span></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2><span class="tag">Auto</span> Automatic behaviour</h2>
+      <table>
+        <tr><td class="k">1Password</td>
+            <td class="d">Always floats<span class="what">Detected by bundle id <code>com.1password.1password</code> and set to floating layout.</span></td></tr>
+        <tr><td class="k">Login</td>
+            <td class="d">Starts automatically<span class="what"><code>start-at-login = true</code> — AeroSpace launches when you log in.</span></td></tr>
+        <tr><td class="k">Gaps</td>
+            <td class="d">8px everywhere<span class="what">Inner and outer gaps between windows and screen edges.</span></td></tr>
+      </table>
+    </section>
+
+  </div>
+
+  <footer>
+    <b>Applying changes.</b> This config is managed by chezmoi. After editing the source, run <code>chezmoi apply</code> to deploy it to
+    <code>~/.config/aerospace/aerospace.toml</code>, then reload it live with <kbd>⌥</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>;</kbd> then <kbd>esc</kbd> (service mode → reload-config).
+    &nbsp;·&nbsp; Full reference: <b>nikitabobko.github.io/AeroSpace/guide</b>
+  </footer>
+</body>
+</html>
