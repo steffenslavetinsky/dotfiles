@@ -185,10 +185,12 @@ DEFAULTS='{
   "sandbox": {
     "enabled": true,
     "failIfUnavailable": false,
-    "autoAllowBashIfSandboxed": false,
+    "autoAllowBashIfSandboxed": true,
     "allowUnsandboxedCommands": true,
     "excludedCommands": [
-      "gh *"
+      "gh *",
+      "git fetch*",
+      "rtk git fetch*"
     ],
     "filesystem": {
       "denyRead": [
@@ -200,7 +202,20 @@ DEFAULTS='{
         "~/.gnupg/**",
         "~/.kube/**",
         "~/.ssh/**",
-        "~/Library/**"
+        "~/Library/**",
+        "~/Pictures/**",
+        "~/Documents/**",
+        "~/Desktop/**",
+        "~/Downloads/**",
+        "~/.netrc",
+        "~/.git-credentials",
+        "~/.config/git/credentials",
+        "~/.npmrc",
+        "~/.pypirc",
+        "~/.docker/config.json"
+      ],
+      "allowRead": [
+        "**/.env.example"
       ],
       "allowWrite": [
         "/tmp/claude/**",
@@ -214,6 +229,9 @@ DEFAULTS='{
     "network": {
       "allowedDomains": [
         "*"
+      ],
+      "allowUnixSockets": [
+        "HOME_PLACEHOLDER/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
       ]
     }
   },
