@@ -24,6 +24,8 @@ For reading, filtering, or transforming structured data, use `jq` for JSON and `
 
 Don't stage intermediate command output in throwaway `/tmp` files when a pipe, command substitution, or process substitution would do — especially in auto mode and for parallel `git add` / `git commit` calls. This is about ephemeral plumbing only; it does **not** restrict writing deliberate, persistent artifacts (e.g. a `/review` skill's review folder, generated reports, scaffolded files).
 
+**Persistent, cross-project artifacts go in `~/claude-work/`, never `/tmp`.** `/tmp` (including any skill's `/tmp/claude/` convention) and the per-session scratchpad are cleared on restart — fine for ephemeral fetch caches and intermediate processing, wrong for anything I'm meant to keep (reports, analysis writeups, generated PDFs, raw data saved "for reproducibility"). When a deliverable should survive past this session and isn't tied to one project's own repo (which gets its own in-repo convention, e.g. `.claude/reviews/`), create a dated subfolder under `~/claude-work/` (e.g. `~/claude-work/2026-08-11-<topic>/`) and write it there instead. If a skill's own instructions say to save to `/tmp/...`, treat that as the skill needing an update, not as the right final location for anything meant to last.
+
 **Keep commands minimal.** Emit the plainest form that works, so it matches my permission allowlist and runs without a prompt:
 
 - No redundant flags — e.g. `git grep` is already recursive; don't add `-r`.
@@ -163,7 +165,6 @@ Prefer `make <target>` over raw tool commands when a Makefile target exists.
 Follow Conventional Commits: `<type>(<scope>): <description>` where type is `feat`, `fix`, `chore`, `docs`, `test`, etc. Append `!` before the colon for breaking changes. Optional body/footer separated by blank lines.
 - Use broad scopes: `backend`, `ci`, `admin-ui`, etc. — not overly fine-grained
 - Examples: `feat(backend): add webhook retry logic`, `fix(admin-ui): date picker timezone issue`
-
 ### Commit & PR Shape
 
 A reviewer must be able to follow each commit and PR with minimal effort.
