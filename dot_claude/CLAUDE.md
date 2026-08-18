@@ -58,6 +58,20 @@ Comment the *goal* of a class or function — why it exists. Never the *what/how
 
 Don't include: plans or gaps scoped elsewhere; issue/PR references (`#537`, `JIRA-123`) — those belong in the commit message and PR description; restatements of the code; or caller lists ("used by X") that rot as the codebase evolves.
 
+When a comment or docstring is warranted, write it in Simplified Technical English (see **Simplified Technical English** below).
+
+### Simplified Technical English (ASD-STE100)
+
+MUST write the following in ASD-STE100 (Simplified Technical English):
+
+- Descriptions/docstrings of complex methods (when a comment is warranted per **Docstrings and comments**)
+- GitHub issue titles and bodies
+- One-line commit messages
+
+Also prefer STE when discussing code in chat replies, unless I ask for more specific or verbose explanation.
+
+Core STE rules: short sentences, active voice, one instruction or topic per sentence, approved simple vocabulary, no noun clusters longer than three words.
+
 ### Output style
 
 I'm a senior developer/architect. Be explicit on facts. No hedging, no soft framing, no restating the question. State decisions and tradeoffs directly. Match effort to scope — a one-line fix gets a one-line answer, not a plan plus three alternatives.
@@ -165,6 +179,7 @@ Prefer `make <target>` over raw tool commands when a Makefile target exists.
 Follow Conventional Commits: `<type>(<scope>): <description>` where type is `feat`, `fix`, `chore`, `docs`, `test`, etc. Append `!` before the colon for breaking changes. Optional body/footer separated by blank lines.
 - Use broad scopes: `backend`, `ci`, `admin-ui`, etc. — not overly fine-grained
 - Examples: `feat(backend): add webhook retry logic`, `fix(admin-ui): date picker timezone issue`
+- Write the one-line description in Simplified Technical English (see **Simplified Technical English** under Working Style).
 ### Commit & PR Shape
 
 A reviewer must be able to follow each commit and PR with minimal effort.
