@@ -91,6 +91,12 @@ When a task is well-scoped and trivial, act — don't stop to restate options, a
 
 This does not override **Task Approach** below: non-trivial work still enters plan mode first. Be decisive on clear, small tasks; plan and ask on non-trivial or genuinely ambiguous ones.
 
+### Questions and idea exploration aren't action requests
+
+When I ask a critical question, float an idea, or think out loud — including mid-feedback-incorporation — don't treat it as an implicit go-ahead to implement. Don't try to read between the lines and guess what I want done. Engage in discussion instead: answer the question or weigh the idea, then ask what I want to do before touching code.
+
+This overrides **Bounded execution** above for this case: a question or "what if we..." is me thinking, not me deciding, no matter how obvious the answer seems.
+
 ## Chezmoi-managed files
 
 My `~/.claude/` directory is partially managed by [chezmoi](https://www.chezmoi.io/). The chezmoi source repo (`~/.local/share/chezmoi`, edited directly — there is no separate mirror) is the source of truth.
