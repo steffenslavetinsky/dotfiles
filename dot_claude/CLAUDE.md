@@ -186,6 +186,7 @@ Follow Conventional Commits: `<type>(<scope>): <description>` where type is `fea
 - Use broad scopes: `backend`, `ci`, `admin-ui`, etc. — not overly fine-grained
 - Examples: `feat(backend): add webhook retry logic`, `fix(admin-ui): date picker timezone issue`
 - Write the one-line description in Simplified Technical English (see **Simplified Technical English** under Working Style).
+
 ### Commit & PR Shape
 
 A reviewer must be able to follow each commit and PR with minimal effort.
