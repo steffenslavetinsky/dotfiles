@@ -19,6 +19,11 @@ RTK_HOOK_CMD='command -v rtk >/dev/null 2>&1 && rtk hook claude || true'
 # outranks the "ask" that gitui-before-{commit,push}.sh returns, which silently
 # defeats the review gate. rtk is kept off those two verbs for the same reason
 # (see [hooks] exclude_commands in the rtk config).
+#
+# They ARE in sandbox.excludedCommands. A sandbox exclusion is not an allow rule,
+# so the gate still asks. It only stops Claude from adding
+# dangerouslyDisableSandbox, which needs its own approval and made every commit
+# ask twice.
 DEFAULTS='{
   "permissions": {
     "allow": [
@@ -193,7 +198,9 @@ DEFAULTS='{
     "excludedCommands": [
       "gh *",
       "git fetch*",
-      "rtk git fetch*"
+      "rtk git fetch*",
+      "git commit*",
+      "git push*"
     ],
     "filesystem": {
       "denyRead": [

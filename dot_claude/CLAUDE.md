@@ -180,6 +180,14 @@ Prefer `make <target>` over raw tool commands when a Makefile target exists.
 - Do not commit unless I explicitly ask
 - Do not push unless I explicitly ask
 
+### Staging and Committing
+
+Always stage first, then ask to commit. `git add` and `git commit` are **two separate Bash calls**, in that order. Never chain them with `&&`, `;`, or a newline.
+
+The commit call must contain the `git commit` invocation and nothing else — no staging before it, no `git log` or `git show` after it to display the result. Look at the result in the next call.
+
+Staging must finish before the commit runs, so that the commit's approval prompt shows me the staged diff. A chained command asks for approval before anything is staged, which hides what the commit contains. A command chained after the commit is approved together with it, so the review gate passes work I never saw.
+
 ### Commit Messages
 
 Follow Conventional Commits: `<type>(<scope>): <description>` where type is `feat`, `fix`, `chore`, `docs`, `test`, etc. Append `!` before the colon for breaking changes. Optional body/footer separated by blank lines.
