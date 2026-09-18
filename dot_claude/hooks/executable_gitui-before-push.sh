@@ -1,24 +1,26 @@
 #!/bin/bash
-# Intercepts git push to always prompt for user approval (review with gitui first)
+# Intercepts git push to always prompt for user approval (review with gitui first).
 
 INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command')
+SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"')
 
-if [[ "$COMMAND" =~ git[[:space:]]+push ]]; then
-    P='\033[38;2;250;179;135m'  # Cappuccino Peach
-    R='\033[0m'
-    printf >&2 "\n${P} 🔍 Review before push!${R}\n"
-    printf >&2 "${P}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${R}\n"
-    printf >&2 "${P} Open another terminal and${R}\n"
-    printf >&2 "${P} run ${R}gitui${P} to inspect${R}\n"
-    printf >&2 "${P}  the commits about to ship.${R}\n\n"
-    jq -n '{
-        hookSpecificOutput: {
-            hookEventName: "PreToolUse",
-            permissionDecision: "ask"
-        }
-    }'
-    exit 0
+# "git" (bare, rtk-prefixed or absolute), then any global options such as
+# -C <path>, -c <k=v>, --git-dir=<x> or --no-pager, then the verb.
+GIT='(^|[^[:alnum:]_-])git([[:space:]]+-[^[:space:]]+([[:space:]]+[^-[:space:]][^[:space:]]*)?)*[[:space:]]+'
+
+if [[ "$COMMAND" =~ ${GIT}push([^[:alnum:]_-]|$) ]]; then
+    "$HOME/.agent-hooks/gitui-review-gate.sh" push "$SESSION_ID"
+    STATUS=$?
+    if [[ "$STATUS" -eq 2 ]]; then
+        jq -n '{
+            hookSpecificOutput: {
+                hookEventName: "PreToolUse",
+                permissionDecision: "ask"
+            }
+        }'
+        exit 0
+    fi
 fi
 
 exit 0
