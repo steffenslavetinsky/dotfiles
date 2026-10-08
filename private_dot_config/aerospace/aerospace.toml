@@ -10,8 +10,8 @@
 
 config-version = 2
 
-# Run AeroSpace at login.
-start-at-login = true
+# Do not run AeroSpace at login. Start it manually.
+start-at-login = false
 
 # Highlight the focused window with JankyBorders.
 # JankyBorders detects an already running instance, so this is restart-safe.
