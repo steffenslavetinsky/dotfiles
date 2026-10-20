@@ -43,9 +43,8 @@ setopt share_history
 
 export GPG_TTY=$(tty)
 
-# asdf
-if [[ $UNAME == "mac" && -f /opt/homebrew/opt/asdf/libexec/asdf.sh ]]; then
-  source /opt/homebrew/opt/asdf/libexec/asdf.sh
-elif [[ -f "$HOME/.asdf/asdf.sh" ]]; then
-  source "$HOME/.asdf/asdf.sh"
+# asdf: shims first, so Homebrew binaries do not shadow .tool-versions
+if (( $+commands[asdf] )); then
+  export ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
+  path=("$ASDF_DATA_DIR/shims" $path)
 fi
