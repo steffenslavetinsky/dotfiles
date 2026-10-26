@@ -201,7 +201,10 @@ DEFAULTS='{
       "git fetch*",
       "rtk git fetch*",
       "git commit*",
-      "git push*"
+      "git push*",
+      "docker *",
+      "rtk docker *",
+      "sdd-otel *"
     ],
     "filesystem": {
       "denyRead": [
@@ -286,6 +289,15 @@ DEFAULTS='{
 # ENFORCED: dotfiles own these keys. Always overwrite so hook/statusline wiring
 # stays correct and portable. To change them, edit THIS script, not settings.json.
 ENFORCED='{
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4318",
+    "OTEL_LOG_TOOL_DETAILS": "1",
+    "OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE": "cumulative"
+  },
   "hooks": {
     "PreToolUse": [
       {

@@ -5,6 +5,10 @@ INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command')
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"')
 
+# Opt-out per repo: a .yolo file in the repo root skips the gate for commit and push.
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+[[ -f "$ROOT/.yolo" ]] && exit 0
+
 # "git" (bare, rtk-prefixed or absolute), then any global options such as
 # -C <path>, -c <k=v>, --git-dir=<x> or --no-pager, then the verb.
 GIT='(^|[^[:alnum:]_-])git([[:space:]]+-[^[:space:]]+([[:space:]]+[^-[:space:]][^[:space:]]*)?)*[[:space:]]+'

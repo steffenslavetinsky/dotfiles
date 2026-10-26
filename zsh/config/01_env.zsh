@@ -16,3 +16,6 @@ autoload -Uz spectrum_ls
 source "$DOTFILES_ROOT/zsh/terminal-themes.zsh"
 source "$DOTFILES_ROOT/zsh/functions/terminal_theme"
 source "$DOTFILES_ROOT/zsh/functions/terminal_theme_init"
+
+# Machine-specific env overrides (not tracked by chezmoi)
+[[ -f "$HOME/.zshenv.local" ]] && source "$HOME/.zshenv.local"

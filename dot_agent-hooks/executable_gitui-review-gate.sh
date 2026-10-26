@@ -14,6 +14,10 @@ R='\033[0m'
 
 mkdir -p /tmp/claude 2>/dev/null || true
 
+# Opt-out per repo: a .yolo file in the repo root skips the gate for commit and push.
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+[[ -f "$ROOT/.yolo" ]] && exit 0
+
 case "$ACTION" in
   commit)
     [[ -f "$SENTINEL" ]] && exit 0
