@@ -157,6 +157,7 @@ DEFAULTS='{
       "Edit(**/.env.*)",
       "Edit(**/credentials)",
       "Edit(**/credentials.*)",
+      "Edit(**/.yolo)",
       "Edit(/etc/**)",
       "Edit(~/.aws/**)",
       "Edit(~/.config/gh/**)",
@@ -237,9 +238,13 @@ DEFAULTS='{
         "~/claude-work/**",
         "~/.local/share/chezmoi/**",
         "~/.cache/uv/**",
+        "~/.impeccable/**",
         "~/.claude/projects/**",
         "~/.claude/plans/**",
         "~/.config/chezmoi/**"
+      ],
+      "denyWrite": [
+        "**/.yolo"
       ]
     },
     "network": {
@@ -357,8 +362,15 @@ ENFORCED="${ENFORCED//RTK_HOOK_CMD_PLACEHOLDER/$RTK_HOOK_CMD}"
 ENFORCED="${ENFORCED//HOME_PLACEHOLDER/$HOME}"
 
 if [[ -f "$SETTINGS" ]]; then
-  # defaults fill gaps, existing wins for shared keys, enforced always overwrites
-  jq -s '.[0] * .[1] * .[2]' <(echo "$DEFAULTS") "$SETTINGS" <(echo "$ENFORCED") > "${SETTINGS}.tmp"
+  # defaults fill gaps, existing wins for shared keys, enforced always overwrites.
+  # jq "*" replaces arrays, so a live deny list would drop new seeded denies:
+  # append the missing seeded entries and keep the live order.
+  jq -s '
+    .[0] as $d
+    | (.[0] * .[1] * .[2])
+    | reduce (["permissions","deny"], ["sandbox","filesystem","denyRead"], ["sandbox","filesystem","denyWrite"]) as $p (.;
+        setpath($p; (getpath($p) // []) as $live | $live + (($d | getpath($p) // []) - $live)))
+  ' <(echo "$DEFAULTS") "$SETTINGS" <(echo "$ENFORCED") > "${SETTINGS}.tmp"
 else
   jq -s '.[0] * .[1]' <(echo "$DEFAULTS") <(echo "$ENFORCED") > "${SETTINGS}.tmp"
 fi
