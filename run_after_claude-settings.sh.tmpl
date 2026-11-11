@@ -152,7 +152,14 @@ DEFAULTS='{
       "Edit(**/*.pem)",
       "Edit(**/*.pfx)",
       "Edit(**/*.ppk)",
-      "Edit(**/*secret*)",
+      "Edit(**/*.secret)",
+      "Edit(**/*secret*.txt)",
+      "Edit(**/.secrets)",
+      "Edit(**/client_secret*.json)",
+      "Edit(**/secrets.json)",
+      "Edit(**/secrets.toml)",
+      "Edit(**/secrets.yaml)",
+      "Edit(**/secrets.yml)",
       "Edit(**/.env)",
       "Edit(**/.env.*)",
       "Edit(**/credentials)",
@@ -174,7 +181,14 @@ DEFAULTS='{
       "Read(**/*.pem)",
       "Read(**/*.pfx)",
       "Read(**/*.ppk)",
-      "Read(**/*secret*)",
+      "Read(**/*.secret)",
+      "Read(**/*secret*.txt)",
+      "Read(**/.secrets)",
+      "Read(**/client_secret*.json)",
+      "Read(**/secrets.json)",
+      "Read(**/secrets.toml)",
+      "Read(**/secrets.yaml)",
+      "Read(**/secrets.yml)",
       "Read(**/.env)",
       "Read(**/.env.*)",
       "Read(**/credentials)",
@@ -187,7 +201,8 @@ DEFAULTS='{
       "Read(~/.config/gcloud/**)",
       "Read(~/.gnupg/**)",
       "Read(~/.kube/**)",
-      "Read(~/.ssh/**)",
+      "Read(~/.ssh/id_**)",
+      "Read(~/.ssh/git-signing)",
       "Read(~/Library/**)"
     ]
   },
@@ -205,7 +220,19 @@ DEFAULTS='{
       "git push*",
       "docker *",
       "rtk docker *",
-      "sdd-otel *"
+      "sdd-otel *",
+      "devpod *",
+      "sdd-devpod *",
+      "SDD_DEVPOD=* sdd-devpod *",
+      "ssh *.devpod*",
+      "git pull*",
+      "rtk git pull*",
+      "git clone*",
+      "rtk git clone*",
+      "git ls-remote*",
+      "rtk git ls-remote*",
+      "git submodule*",
+      "rtk git submodule*"
     ],
     "filesystem": {
       "denyRead": [
@@ -216,7 +243,8 @@ DEFAULTS='{
         "~/.aws/**",
         "~/.gnupg/**",
         "~/.kube/**",
-        "~/.ssh/**",
+        "~/.ssh/id_*",
+        "~/.ssh/git-signing",
         "~/Library/**",
         "~/Pictures/**",
         "~/Documents/**",
@@ -230,9 +258,10 @@ DEFAULTS='{
         "~/.docker/config.json"
       ],
       "allowRead": [
-        "**/.env.example"
+        "~/Library/Application Support/orca/**"
       ],
       "allowWrite": [
+        "~/.local/share/ai-os/**",
         "/tmp/claude/**",
         "~/code/**",
         "~/claude-work/**",
@@ -241,7 +270,8 @@ DEFAULTS='{
         "~/.impeccable/**",
         "~/.claude/projects/**",
         "~/.claude/plans/**",
-        "~/.config/chezmoi/**"
+        "~/.config/chezmoi/**",
+        "~/.devpod/**"
       ],
       "denyWrite": [
         "**/.yolo"
@@ -252,7 +282,8 @@ DEFAULTS='{
         "*"
       ],
       "allowUnixSockets": [
-        "HOME_PLACEHOLDER/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+        "HOME_PLACEHOLDER/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock",
+        "HOME_PLACEHOLDER/Library/Application Support/orca/"
       ]
     }
   },
@@ -357,20 +388,36 @@ ENFORCED='{
   }
 }'
 
+# Entries once seeded and now dropped. The merge only appends, so a dropped
+# default stays in the live file until it is listed here.
+# *secret* blocked library code (openai, docker, stdlib secrets.py).
+# A relative sandbox path resolves against ~/.claude, so **/.env.example never
+# matched a repo. ~/**/.env.example was tried and had no visible effect.
+# ~/.ssh/** hid ssh config and known_hosts, so ssh, git and devpod failed in the
+# sandbox. Keys live in the 1Password agent; only id_* stays hidden.
+RETIRED='{
+  "permissions": { "deny": ["Edit(**/*secret*)", "Read(**/*secret*)", "Read(~/.ssh/**)"] },
+  "sandbox": { "filesystem": { "allowRead": ["**/.env.example", "~/**/.env.example"], "denyRead": ["~/.ssh/**"] } }
+}'
+
 DEFAULTS="${DEFAULTS//HOME_PLACEHOLDER/$HOME}"
 ENFORCED="${ENFORCED//RTK_HOOK_CMD_PLACEHOLDER/$RTK_HOOK_CMD}"
 ENFORCED="${ENFORCED//HOME_PLACEHOLDER/$HOME}"
 
 if [[ -f "$SETTINGS" ]]; then
   # defaults fill gaps, existing wins for shared keys, enforced always overwrites.
-  # jq "*" replaces arrays, so a live deny list would drop new seeded denies:
+  # jq "*" replaces arrays, so a live list would drop new seeded entries:
   # append the missing seeded entries and keep the live order.
   jq -s '
     .[0] as $d
     | (.[0] * .[1] * .[2])
-    | reduce (["permissions","deny"], ["sandbox","filesystem","denyRead"], ["sandbox","filesystem","denyWrite"]) as $p (.;
+    | reduce (["permissions","deny"], ["sandbox","filesystem","denyRead"], ["sandbox","filesystem","denyWrite"],
+              ["sandbox","filesystem","allowRead"], ["sandbox","filesystem","allowWrite"],
+              ["sandbox","network","allowUnixSockets"], ["sandbox","excludedCommands"]) as $p (.;
         setpath($p; (getpath($p) // []) as $live | $live + (($d | getpath($p) // []) - $live)))
-  ' <(echo "$DEFAULTS") "$SETTINGS" <(echo "$ENFORCED") > "${SETTINGS}.tmp"
+    | reduce (["permissions","deny"], ["sandbox","filesystem","allowRead"], ["sandbox","filesystem","denyRead"]) as $p (.;
+        setpath($p; getpath($p) - ($r | getpath($p))))
+  ' --argjson r "$RETIRED" <(echo "$DEFAULTS") "$SETTINGS" <(echo "$ENFORCED") > "${SETTINGS}.tmp"
 else
   jq -s '.[0] * .[1]' <(echo "$DEFAULTS") <(echo "$ENFORCED") > "${SETTINGS}.tmp"
 fi
